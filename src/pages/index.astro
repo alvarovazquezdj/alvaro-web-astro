@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Landing from '../components/Landing.astro';
+import Biography from '../components/Biography.astro';
+import Contact from '../components/Contact.astro';
+---
+
+<Layout title="Alvaro Vazquez">
+	<section
+      id='top'
+      class='flex-1 min-h-auto flex flex-col justify-start xl:justify-center xl:min-h-screen'
+    >
+      <Landing/>
+      <Biography/>
+      <Contact />
+    </section>
+</Layout>
