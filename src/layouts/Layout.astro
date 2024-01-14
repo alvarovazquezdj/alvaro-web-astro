@@ -1,12 +1,12 @@
 ---
-import Background from '../components/Background.astro';
-import Navigation from '../components/Navigation.astro';
+import Background from '@/components/Background.astro'
+import Navigation from '@/components/Navigation.astro'
 
 interface Props {
-  title: string;
+  title: string
 }
 
-const { title } = Astro.props;
+const { title } = Astro.props
 ---
 
 <!doctype html>
@@ -20,18 +20,20 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <Background/>
+    <Background />
     <main>
-		<div class='flex flex-col xl:flex-row justify-between m-auto xl:gap-x-24 xl:w-[1500px] mt-10 xl:mt-0'>
-			<div class='w-full xl:w-80'>
-			  <Navigation />
-			</div>
-  
-			<main class='flex-1 relative px-6 scroll-smooth'>
-			  <slot/>
-			</main>
-		  </div>
-	</main>
+      <div
+        class="flex flex-col xl:flex-row justify-between m-auto xl:gap-x-24 xl:w-[1500px] mt-10 xl:mt-0"
+      >
+        <div class="w-full xl:w-80">
+          <Navigation />
+        </div>
+
+        <main class="flex-1 relative px-6 scroll-smooth">
+          <slot />
+        </main>
+      </div>
+    </main>
   </body>
 </html>
 <style is:global>
