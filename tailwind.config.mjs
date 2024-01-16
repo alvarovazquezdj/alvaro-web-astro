@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#FFD200',
+        primary: '#ffd000',
         gray: 'rgba(17, 17, 17, 0.5)'
       },
       backgroundImage: {
