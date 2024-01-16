@@ -47,6 +47,7 @@ const SOCIAL_NETWORKS_LINKS = [
 
   <input type="checkbox" id="menu" hidden class="peer select-none" />
   <label
+    id="boton"
     class="bg-zinc-800 w-8 h-8 p-2 border-zinc-500 flex items-center justify-center rounded-full border fixed right-4 bottom-4 xl:relative z-50 xl:hidden peer-checked:[&>.first]:hidden peer-checked:[&>.last]:block cursor-pointer hover:scale-125 transition hover:border-white"
   >
     <MenuIcon />
@@ -93,3 +94,9 @@ const SOCIAL_NETWORKS_LINKS = [
     </div>
   </nav>
 </aside>
+
+<style>
+  #boton:active{
+ background: red; 
+}
+</style>
