@@ -1,0 +1,275 @@
+---
+// src/pages/index.astro
+import Background from '@/components/Background.astro'
+const title = 'Configurador de Equipos'
+---
+
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{title}</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+        />
+        <style>
+            body {
+                background-color: black; /* Fondo de la página en negro */
+            }
+            .container {
+                display: flex;
+                flex-direction: column; /* Cambia a columna en móviles */
+                max-width: 1440px;
+                margin: 0 auto;
+            }
+            .image-container {
+                position: relative;
+                display: flex;
+                flex-direction: column; /* Alinear elementos en columna */
+                justify-content: flex-start; /* Alinear al inicio */
+                width: 100%; /* Asegúrate de que ocupe el 100% en móviles */
+                height: 810px; /* Altura para pantallas grandes */
+                overflow: hidden;
+                background-color: white; /* Fondo del contenedor en blanco */
+            }
+            .equipment-image {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: auto; /* Mantiene la proporción */
+                height: 100%; /* Ocupa toda la altura del contenedor */
+                max-width: 100%; /* Asegura que no exceda el ancho del contenedor */
+                opacity: 0; /* Inicialmente invisible */
+                transition: opacity 0.3s ease; /* Suaviza la transición de visibilidad */
+                object-fit: contain; /* Ajusta la imagen sin cortar */
+            }
+            .visible {
+                opacity: 1; /* Visible cuando se aplica esta clase */
+            }
+            .info-column {
+                width: 100%; /* Ocupa el 100% en móviles */
+                padding-top: 20px; /* Espacio entre imágenes y columna de información */
+                padding-left: 40px; /* Aumentar espacio en el lado izquierdo */
+                color: white; /* Color del texto */
+            }
+            /* Estilo para el texto del pie de las imágenes */
+            .image-caption {
+                text-align: center; /* Centrar el texto */
+                color: black; /* Color negro para el texto */
+                margin-top: auto; /* Empuja el texto hacia abajo */
+                padding: 10px; /* Espacio interior */
+            }
+            /* Estilo para el input de horas extras */
+            .extra-hours-input {
+                color: black; /* Texto en negro */
+                background-color: white; /* Fondo blanco para el input */
+                width: 50px; /* Ancho reducido para el input */
+            }
+            /* Estilo del contenedor de horas extras */
+            .extra-hours-container {
+                height: 40px; /* Altura fija para mantener el espacio */
+                visibility: hidden; /* Oculto por defecto */
+                transition: visibility 0.3s ease; /* Transición suave */
+            }
+            .extra-hours-container.visible {
+                visibility: visible; /* Visible cuando se aplica esta clase */
+            }
+            /* Consulta de medios para pantallas grandes */
+            @media (min-width: 768px) {
+                .container {
+                    flex-direction: row; /* Cambia a fila en pantallas grandes */
+                }
+                .image-container {
+                    width: 70%; /* Ajusta el ancho según sea necesario */
+                }
+                .info-column {
+                    width: 30%; /* Ajusta el ancho según sea necesario */
+                    padding-left: 40px; /* Aumentar espacio en el lado izquierdo */
+                }
+            }
+            /* Consulta de medios para pantallas pequeñas */
+            @media (max-width: 768px) {
+                .image-container {
+                    height: 450px; /* Altura ajustada para móviles */
+                }
+            }
+            @media (max-width: 480px) {
+                .image-container {
+                    height: 300px; /* Altura aún más ajustada para pantallas pequeñas */
+                }
+            }
+        </style>
+    </head>
+    <body class="p-5">
+        <Background />
+        <h1 class="text-2xl font-bold mb-8 text-white grid justify-center">
+            <!-- Aumenta mb-8 para más espacio -->
+            {title}
+        </h1>
+
+        <div class="container">
+            <div class="image-container" id="imageContainer">
+                <img
+                    src="/images/sonido.png"
+                    alt="Sonido"
+                    class="equipment-image"
+                    id="img-sonido"
+                />
+                <img
+                    src="/images/iluminacion.png"
+                    alt="Iluminación"
+                    class="equipment-image"
+                    id="img-iluminacion"
+                />
+                <img
+                    src="/images/humo.png"
+                    alt="Humo"
+                    class="equipment-image"
+                    id="img-humo"
+                />
+                <img
+                    src="/images/dj.png"
+                    alt="DJ"
+                    class="equipment-image"
+                    id="img-dj"
+                />
+                <div class="image-caption">
+                    Las imágenes que aparecen son orientativas y pueden variar
+                    con los modelos de equipos instalados finalmente.
+                </div>
+            </div>
+
+            <div class="info-column">
+                <form id="equipmentForm" class="mb-4 text-white">
+                    <div class="space-y-2">
+                        <label class="block">
+                            <input
+                                type="checkbox"
+                                value="sonido"
+                                class="mr-2"
+                                onchange="updateDisplay()"
+                            /> Sonido
+                        </label>
+                        <label class="block">
+                            <input
+                                type="checkbox"
+                                value="iluminacion"
+                                class="mr-2"
+                                onchange="updateDisplay()"
+                            /> Iluminación
+                        </label>
+                        <label class="block">
+                            <input
+                                type="checkbox"
+                                value="humo"
+                                class="mr-2"
+                                onchange="updateDisplay()"
+                            /> Humo
+                        </label>
+                        <label class="block">
+                            <input
+                                type="checkbox"
+                                value="dj"
+                                class="mr-2"
+                                onchange="updateDisplay()"
+                            /> DJ (4 horas)
+                        </label>
+                        <div
+                            id="extraHoursContainer"
+                            class="extra-hours-container"
+                        >
+                            <label class="block">
+                                Horas Extras:
+                                <input
+                                    type="number"
+                                    id="extraHours"
+                                    class="ml-2 p-1 border border-gray-300 rounded extra-hours-input"
+                                    value="0"
+                                    onchange="updateDisplay()"
+                                />
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                <hr class="my-4 border-gray-400" />
+                <!-- Línea de separación -->
+                <h2 class="text-xl font-semibold mb-2">
+                    Costo Total: <span id="totalCost">0 €</span>
+                </h2>
+                <div id="equipmentDescriptions"></div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const equipmentPrices = {
+                    sonido: 100, // Precio de sonido
+                    iluminacion: 50, // Precio de iluminación
+                    humo: 20, // Precio de humo
+                    dj: 180 // Precio de DJ
+                }
+
+                const extraHourPrice = 85 // Precio por hora extra
+                const equipmentDescriptions = {
+                    sonido: 'Sonido: x2 RCF 715 MK5',
+                    iluminacion: 'Iluminación: x4 AudibaX IOWA 70W',
+                    humo: 'Máquina de humo: x1 BeamZ 1800W',
+                    dj: 'DJ: 4 horas'
+                }
+
+                window.updateDisplay = function () {
+                    const checkboxes = document.querySelectorAll(
+                        '#equipmentForm input[type="checkbox"]'
+                    )
+                    let totalCost = 0
+                    let selectedDescriptions = ''
+                    let djChecked = false // Variable para verificar si DJ está marcado
+
+                    checkboxes.forEach((checkbox) => {
+                        const img = document.getElementById(
+                            `img-${checkbox.value}`
+                        )
+                        if (checkbox.checked) {
+                            img.classList.add('visible')
+                            totalCost += equipmentPrices[checkbox.value] // Suma el precio del equipo
+                            selectedDescriptions += `<p>${equipmentDescriptions[checkbox.value]}</p>` // Agrega la descripción
+                            if (checkbox.value === 'dj') {
+                                djChecked = true // Si DJ está marcado, actualiza la variable
+                            }
+                        } else {
+                            img.classList.remove('visible')
+                        }
+                    })
+
+                    // Mostrar u ocultar el input de horas extras
+                    const extraHoursContainer = document.getElementById(
+                        'extraHoursContainer'
+                    )
+                    if (djChecked) {
+                        extraHoursContainer.classList.add('visible') // Mostrar input si DJ está marcado
+                    } else {
+                        extraHoursContainer.classList.remove('visible') // Ocultar input si DJ no está marcado
+                    }
+
+                    // Sumar el costo de las horas extras
+                    const extraHours =
+                        parseInt(document.getElementById('extraHours').value) ||
+                        0 // Obtener horas extras
+                    totalCost += extraHours * extraHourPrice // Sumar costo de horas extras
+
+                    // Agregar descripción de horas extras
+                    if (extraHours > 0) {
+                        selectedDescriptions += `<p>Horas Extras: ${extraHours} (${extraHours * extraHourPrice}€)</p>`
+                    }
+
+                    // Actualiza el costo total y las descripciones en el DOM
+                    document.getElementById('totalCost').innerText =
+                        `${totalCost} €` // Muestra el total en euros
+                    document.getElementById('equipmentDescriptions').innerHTML =
+                        selectedDescriptions // Muestra las descripciones
+                }
+            })
+        </script>
+    </body>
+</html>
