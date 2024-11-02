@@ -1,5 +1,4 @@
 ---
-// src/pages/index.astro
 import Background from '@/components/Background.astro'
 const title = 'Configurador de Equipos'
 ---
@@ -15,84 +14,56 @@ const title = 'Configurador de Equipos'
         />
         <style>
             body {
-                background-color: black; /* Fondo de la página en negro */
+                background-color: black;
             }
             .container {
                 display: flex;
-                flex-direction: column; /* Cambia a columna en móviles */
+                flex-direction: column;
                 max-width: 1440px;
                 margin: 0 auto;
             }
             .image-container {
                 position: relative;
                 display: flex;
-                flex-direction: column; /* Alinear elementos en columna */
-                justify-content: flex-start; /* Alinear al inicio */
-                width: 100%; /* Asegúrate de que ocupe el 100% en móviles */
-                height: 810px; /* Altura para pantallas grandes */
+                flex-direction: column;
+                justify-content: flex-start;
+                width: 100%;
+                height: 810px;
                 overflow: hidden;
-                background-color: white; /* Fondo del contenedor en blanco */
+                background-color: white;
             }
             .equipment-image {
                 position: absolute;
                 top: 0;
                 left: 0;
-                width: auto; /* Mantiene la proporción */
-                height: 100%; /* Ocupa toda la altura del contenedor */
-                max-width: 100%; /* Asegura que no exceda el ancho del contenedor */
-                opacity: 0; /* Inicialmente invisible */
-                transition: opacity 0.3s ease; /* Suaviza la transición de visibilidad */
-                object-fit: contain; /* Ajusta la imagen sin cortar */
+                width: auto;
+                height: 100%;
+                max-width: 100%;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                object-fit: contain;
             }
             .visible {
-                opacity: 1; /* Visible cuando se aplica esta clase */
+                opacity: 1;
             }
             .info-column {
-                width: 100%; /* Ocupa el 100% en móviles */
-                padding-top: 20px; /* Espacio entre imágenes y columna de información */
-                padding-left: 40px; /* Aumentar espacio en el lado izquierdo */
-                color: white; /* Color del texto */
-            }
-            .image-caption {
-                text-align: center; /* Centrar el texto */
-                color: black; /* Color negro para el texto */
-                margin-top: auto; /* Empuja el texto hacia abajo */
-                padding: 10px; /* Espacio interior */
+                width: 100%;
+                padding-top: 20px;
+                padding-left: 40px;
+                color: white;
             }
             .extra-hours-input {
-                color: black; /* Texto en negro */
-                background-color: white; /* Fondo blanco para el input */
-                width: 50px; /* Ancho reducido para el input */
+                color: black;
+                background-color: white;
+                width: 50px;
             }
             .extra-hours-container {
-                height: 40px; /* Altura fija para mantener el espacio */
-                visibility: hidden; /* Oculto por defecto */
-                transition: visibility 0.3s ease; /* Transición suave */
+                height: 40px;
+                visibility: hidden;
+                transition: visibility 0.3s ease;
             }
             .extra-hours-container.visible {
-                visibility: visible; /* Visible cuando se aplica esta clase */
-            }
-            @media (min-width: 768px) {
-                .container {
-                    flex-direction: row; /* Cambia a fila en pantallas grandes */
-                }
-                .image-container {
-                    width: 70%; /* Ajusta el ancho según sea necesario */
-                }
-                .info-column {
-                    width: 30%; /* Ajusta el ancho según sea necesario */
-                    padding-left: 40px; /* Aumentar espacio en el lado izquierdo */
-                }
-            }
-            @media (max-width: 768px) {
-                .image-container {
-                    height: 450px; /* Altura ajustada para móviles */
-                }
-            }
-            @media (max-width: 480px) {
-                .image-container {
-                    height: 300px; /* Altura aún más ajustada para pantallas pequeñas */
-                }
+                visibility: visible;
             }
         </style>
     </head>
@@ -128,10 +99,6 @@ const title = 'Configurador de Equipos'
                     class="equipment-image"
                     id="img-dj"
                 />
-                <div class="image-caption">
-                    Las imágenes que aparecen son orientativas y pueden variar
-                    con los modelos de equipos instalados finalmente.
-                </div>
             </div>
 
             <div class="info-column">
@@ -181,12 +148,12 @@ const title = 'Configurador de Equipos'
                                     class="ml-2 p-1 border border-gray-300 rounded extra-hours-input"
                                     value="0"
                                     onchange="updateDisplay()"
+                                    min="0"
                                 />
                             </label>
                         </div>
                     </div>
                 </form>
-                <hr class="my-4 border-gray-400" />
                 <h2 class="text-xl font-semibold mb-2">
                     Costo Total: <span id="totalCost">0 €</span>
                 </h2>
@@ -196,15 +163,15 @@ const title = 'Configurador de Equipos'
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const equipmentPrices: Record<string, number> = {
+                const equipmentPrices = {
                     sonido: 100,
                     iluminacion: 50,
                     humo: 20,
                     dj: 180
                 }
 
-                const extraHourPrice = 85 // Precio por hora extra
-                const equipmentDescriptions: Record<string, string> = {
+                const extraHourPrice = 85
+                const equipmentDescriptions = {
                     sonido: 'Sonido: x2 RCF 715 MK5',
                     iluminacion: 'Iluminación: x4 AudibaX IOWA 70W',
                     humo: 'Máquina de humo: x1 BeamZ 1800W',
@@ -212,63 +179,60 @@ const title = 'Configurador de Equipos'
                 }
 
                 window.updateDisplay = function () {
-                    const checkboxes =
-                        document.querySelectorAll<HTMLInputElement>(
-                            '#equipmentForm input[type="checkbox"]'
-                        )
+                    const checkboxes = document.querySelectorAll(
+                        '#equipmentForm input[type="checkbox"]'
+                    )
                     let totalCost = 0
                     let selectedDescriptions = ''
-                    let djChecked = false // Variable para verificar si DJ está marcado
+                    let djChecked = false
 
                     checkboxes.forEach((checkbox) => {
                         const img = document.getElementById(
                             `img-${checkbox.value}`
-                        ) as HTMLImageElement | null // Aseguramos que img sea un HTMLImageElement o null
+                        )
                         if (checkbox.checked && img) {
                             img.classList.add('visible')
-                            totalCost += equipmentPrices[checkbox.value] // Suma el precio del equipo
-                            selectedDescriptions += `<p>${equipmentDescriptions[checkbox.value]}</p>` // Agrega la descripción
+                            totalCost += equipmentPrices[checkbox.value]
+                            selectedDescriptions += `<p>${equipmentDescriptions[checkbox.value]}</p>`
                             if (checkbox.value === 'dj') {
-                                djChecked = true // Si DJ está marcado, actualiza la variable
+                                djChecked = true
                             }
                         } else if (img) {
                             img.classList.remove('visible')
                         }
                     })
 
-                    // Mostrar u ocultar el input de horas extras
                     const extraHoursContainer = document.getElementById(
                         'extraHoursContainer'
-                    ) as HTMLDivElement | null // Aseguramos que extraHoursContainer sea un HTMLDivElement o null
-                    if (djChecked && extraHoursContainer) {
-                        extraHoursContainer.classList.add('visible') // Mostrar input si DJ está marcado
-                    } else if (extraHoursContainer) {
-                        extraHoursContainer.classList.remove('visible') // Ocultar input si DJ no está marcado
+                    )
+                    if (djChecked) {
+                        extraHoursContainer.classList.add('visible')
+                    } else {
+                        extraHoursContainer.classList.remove('visible')
                     }
 
-                    // Sumar el costo de las horas extras
                     const extraHours =
-                        parseInt(
-                            (
-                                document.getElementById(
-                                    'extraHours'
-                                ) as HTMLInputElement
-                            ).value
-                        ) || 0 // Aseguramos que sea un HTMLInputElement
-                    totalCost += extraHours * extraHourPrice // Sumar costo de horas extras
+                        parseInt(document.getElementById('extraHours').value) ||
+                        0
+                    totalCost += extraHours * extraHourPrice
 
-                    // Agregar descripción de horas extras
                     if (extraHours > 0) {
                         selectedDescriptions += `<p>Horas Extras: ${extraHours} (${extraHours * extraHourPrice}€)</p>`
                     }
 
-                    // Actualiza el costo total y las descripciones en el DOM
-                    document.getElementById('totalCost')!.innerText =
-                        `${totalCost} €` // Usamos el operador de aserción no nula
-                    document.getElementById(
-                        'equipmentDescriptions'
-                    )!.innerHTML = selectedDescriptions // Usamos el operador de aserción no nula
+                    document.getElementById('totalCost').innerText =
+                        `${totalCost} €`
+                    document.getElementById('equipmentDescriptions').innerHTML =
+                        selectedDescriptions
                 }
+
+                // Asegúrate de que el input de horas extras no permita negativos
+                const extraHoursInput = document.getElementById('extraHours')
+                extraHoursInput.addEventListener('input', function () {
+                    if (this.value < 0) {
+                        this.value = 0 // Establecer en 0 si el valor es negativo
+                    }
+                })
             })
         </script>
     </body>
