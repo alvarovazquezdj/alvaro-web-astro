@@ -196,15 +196,15 @@ const title = 'Configurador de Equipos'
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const equipmentPrices = {
-                    sonido: 100, // Precio de sonido
-                    iluminacion: 50, // Precio de iluminación
-                    humo: 20, // Precio de humo
-                    dj: 180 // Precio de DJ
+                const equipmentPrices: Record<string, number> = {
+                    sonido: 100,
+                    iluminacion: 50,
+                    humo: 20,
+                    dj: 180
                 }
 
                 const extraHourPrice = 85 // Precio por hora extra
-                const equipmentDescriptions = {
+                const equipmentDescriptions: Record<string, string> = {
                     sonido: 'Sonido: x2 RCF 715 MK5',
                     iluminacion: 'Iluminación: x4 AudibaX IOWA 70W',
                     humo: 'Máquina de humo: x1 BeamZ 1800W',
@@ -212,9 +212,10 @@ const title = 'Configurador de Equipos'
                 }
 
                 window.updateDisplay = function () {
-                    const checkboxes = document.querySelectorAll(
-                        '#equipmentForm input[type="checkbox"]'
-                    )
+                    const checkboxes =
+                        document.querySelectorAll<HTMLInputElement>(
+                            '#equipmentForm input[type="checkbox"]'
+                        )
                     let totalCost = 0
                     let selectedDescriptions = ''
                     let djChecked = false // Variable para verificar si DJ está marcado
@@ -222,18 +223,15 @@ const title = 'Configurador de Equipos'
                     checkboxes.forEach((checkbox) => {
                         const img = document.getElementById(
                             `img-${checkbox.value}`
-                        ) as HTMLImageElement // Aseguramos que img sea un HTMLImageElement
-                        if (checkbox.checked) {
+                        ) as HTMLImageElement | null // Aseguramos que img sea un HTMLImageElement o null
+                        if (checkbox.checked && img) {
                             img.classList.add('visible')
-                            totalCost +=
-                                equipmentPrices[
-                                    checkbox.value as keyof typeof equipmentPrices
-                                ] // Aseguramos que checkbox.value es un key válido
-                            selectedDescriptions += `<p>${equipmentDescriptions[checkbox.value as keyof typeof equipmentDescriptions]}</p>` // Agrega la descripción
+                            totalCost += equipmentPrices[checkbox.value] // Suma el precio del equipo
+                            selectedDescriptions += `<p>${equipmentDescriptions[checkbox.value]}</p>` // Agrega la descripción
                             if (checkbox.value === 'dj') {
                                 djChecked = true // Si DJ está marcado, actualiza la variable
                             }
-                        } else {
+                        } else if (img) {
                             img.classList.remove('visible')
                         }
                     })
@@ -241,10 +239,10 @@ const title = 'Configurador de Equipos'
                     // Mostrar u ocultar el input de horas extras
                     const extraHoursContainer = document.getElementById(
                         'extraHoursContainer'
-                    ) as HTMLDivElement // Aseguramos que extraHoursContainer sea un HTMLDivElement
-                    if (djChecked) {
+                    ) as HTMLDivElement | null // Aseguramos que extraHoursContainer sea un HTMLDivElement o null
+                    if (djChecked && extraHoursContainer) {
                         extraHoursContainer.classList.add('visible') // Mostrar input si DJ está marcado
-                    } else {
+                    } else if (extraHoursContainer) {
                         extraHoursContainer.classList.remove('visible') // Ocultar input si DJ no está marcado
                     }
 
