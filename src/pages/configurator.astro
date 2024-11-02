@@ -53,20 +53,17 @@ const title = 'Configurador de Equipos'
                 padding-left: 40px; /* Aumentar espacio en el lado izquierdo */
                 color: white; /* Color del texto */
             }
-            /* Estilo para el texto del pie de las imágenes */
             .image-caption {
                 text-align: center; /* Centrar el texto */
                 color: black; /* Color negro para el texto */
                 margin-top: auto; /* Empuja el texto hacia abajo */
                 padding: 10px; /* Espacio interior */
             }
-            /* Estilo para el input de horas extras */
             .extra-hours-input {
                 color: black; /* Texto en negro */
                 background-color: white; /* Fondo blanco para el input */
                 width: 50px; /* Ancho reducido para el input */
             }
-            /* Estilo del contenedor de horas extras */
             .extra-hours-container {
                 height: 40px; /* Altura fija para mantener el espacio */
                 visibility: hidden; /* Oculto por defecto */
@@ -75,7 +72,6 @@ const title = 'Configurador de Equipos'
             .extra-hours-container.visible {
                 visibility: visible; /* Visible cuando se aplica esta clase */
             }
-            /* Consulta de medios para pantallas grandes */
             @media (min-width: 768px) {
                 .container {
                     flex-direction: row; /* Cambia a fila en pantallas grandes */
@@ -88,7 +84,6 @@ const title = 'Configurador de Equipos'
                     padding-left: 40px; /* Aumentar espacio en el lado izquierdo */
                 }
             }
-            /* Consulta de medios para pantallas pequeñas */
             @media (max-width: 768px) {
                 .image-container {
                     height: 450px; /* Altura ajustada para móviles */
@@ -104,7 +99,6 @@ const title = 'Configurador de Equipos'
     <body class="p-5">
         <Background />
         <h1 class="text-2xl font-bold mb-8 text-white grid justify-center">
-            <!-- Aumenta mb-8 para más espacio -->
             {title}
         </h1>
 
@@ -193,7 +187,6 @@ const title = 'Configurador de Equipos'
                     </div>
                 </form>
                 <hr class="my-4 border-gray-400" />
-                <!-- Línea de separación -->
                 <h2 class="text-xl font-semibold mb-2">
                     Costo Total: <span id="totalCost">0 €</span>
                 </h2>
@@ -229,11 +222,14 @@ const title = 'Configurador de Equipos'
                     checkboxes.forEach((checkbox) => {
                         const img = document.getElementById(
                             `img-${checkbox.value}`
-                        )
+                        ) as HTMLImageElement // Aseguramos que img sea un HTMLImageElement
                         if (checkbox.checked) {
                             img.classList.add('visible')
-                            totalCost += equipmentPrices[checkbox.value] // Suma el precio del equipo
-                            selectedDescriptions += `<p>${equipmentDescriptions[checkbox.value]}</p>` // Agrega la descripción
+                            totalCost +=
+                                equipmentPrices[
+                                    checkbox.value as keyof typeof equipmentPrices
+                                ] // Aseguramos que checkbox.value es un key válido
+                            selectedDescriptions += `<p>${equipmentDescriptions[checkbox.value as keyof typeof equipmentDescriptions]}</p>` // Agrega la descripción
                             if (checkbox.value === 'dj') {
                                 djChecked = true // Si DJ está marcado, actualiza la variable
                             }
@@ -245,7 +241,7 @@ const title = 'Configurador de Equipos'
                     // Mostrar u ocultar el input de horas extras
                     const extraHoursContainer = document.getElementById(
                         'extraHoursContainer'
-                    )
+                    ) as HTMLDivElement // Aseguramos que extraHoursContainer sea un HTMLDivElement
                     if (djChecked) {
                         extraHoursContainer.classList.add('visible') // Mostrar input si DJ está marcado
                     } else {
@@ -254,8 +250,13 @@ const title = 'Configurador de Equipos'
 
                     // Sumar el costo de las horas extras
                     const extraHours =
-                        parseInt(document.getElementById('extraHours').value) ||
-                        0 // Obtener horas extras
+                        parseInt(
+                            (
+                                document.getElementById(
+                                    'extraHours'
+                                ) as HTMLInputElement
+                            ).value
+                        ) || 0 // Aseguramos que sea un HTMLInputElement
                     totalCost += extraHours * extraHourPrice // Sumar costo de horas extras
 
                     // Agregar descripción de horas extras
@@ -264,10 +265,11 @@ const title = 'Configurador de Equipos'
                     }
 
                     // Actualiza el costo total y las descripciones en el DOM
-                    document.getElementById('totalCost').innerText =
-                        `${totalCost} €` // Muestra el total en euros
-                    document.getElementById('equipmentDescriptions').innerHTML =
-                        selectedDescriptions // Muestra las descripciones
+                    document.getElementById('totalCost')!.innerText =
+                        `${totalCost} €` // Usamos el operador de aserción no nula
+                    document.getElementById(
+                        'equipmentDescriptions'
+                    )!.innerHTML = selectedDescriptions // Usamos el operador de aserción no nula
                 }
             })
         </script>
