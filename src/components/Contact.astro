@@ -1,7 +1,6 @@
 ---
 import ContactCard from '@/components/ContactCard.astro'
 import InstagramIcon from '@/components/icons/InstagramIcon.astro'
-import MailIcon from '@/components/icons/MailIcon.astro'
 import YouTubeIcon from '@/components/icons/YouTubeIcon.astro'
 
 const SOCIAL_NETWORKS = [
@@ -16,19 +15,13 @@ const SOCIAL_NETWORKS = [
     name: 'YouTube',
     username: '@alvarovazquezdj',
     Icon: YouTubeIcon
-  },
-  {
-    href: 'https://www.instagram.com/cocoagency.es/',
-    name: 'Booking',
-    username: '@cocoagency.es',
-    Icon: InstagramIcon
   }
 ]
 ---
 
 <section class="mb-20 flex gap-8 flex-col">
   <h3 class="text-primary text-4xl font-bold mt-28" id="contact">Contacto</h3>
-  <ul class="grid w-full grid-cols-1 lg:grid-cols-3 gap-2">
+  <ul class="grid w-full grid-cols-1 lg:grid-cols-2 gap-2">
     {SOCIAL_NETWORKS.map((s, i) => <ContactCard {...s} />)}
   </ul>
 </section>
