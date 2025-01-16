@@ -6,11 +6,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#ffd000',
+        primary: '#ff7d00',
         gray: 'rgba(17, 17, 17, 0.5)'
       },
       backgroundImage: {
-        starfield: 'url(/background.webp)'
+        starfield: 'url(/background.gif)'
       },
       screens: {
         medium: '468px',
